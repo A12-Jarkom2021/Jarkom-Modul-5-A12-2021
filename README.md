@@ -41,6 +41,118 @@ Kalian juga diharuskan melakukan Routing agar setiap perangkat pada jaringan ter
 ### D
 Tugas berikutnya adalah memberikan ip pada subnet Blueno, Cipher, Fukurou, dan Elena secara dinamis menggunakan bantuan DHCP server. Kemudian kalian ingat bahwa kalian harus setting DHCP Relay pada router yang menghubungkannya.
 
+## Setup DHCP Relay di Foosha, Guanhao, dan Water7
+- Install `isc-dhcp-server`
+```
+#install DHCP Relay
+apt-get update
+apt-get install isc-dhcp-relay
+```
+- Jalankan dhcp server
+```
+service isc-dhcp-relay restart
+service isc-dhcp-relay status
+```
+- Ubah file /etc/default/isc-dhcp-relay
+```
+# Defaults for isc-dhcp-relay initscript
+# sourced by /etc/init.d/isc-dhcp-relay
+# installed at /etc/default/isc-dhcp-relay by the maintainer scripts
+
+#
+# This is a POSIX shell fragment
+#
+
+# What servers should the DHCP relay forward requests to?
+SERVERS="10.5.0.11"
+
+# On what interfaces should the DHCP relay (dhrelay) serve DHCP requests?
+INTERFACES="eth1 eth2"
+
+# Additional options that are passed to the DHCP relay daemon?
+OPTIONS=""
+```
+- Ubah file /etc/sysctl.conf dengan uncomment `net.ipv4.ip_forward=1`
+
+#### Setup DHCP Server di Jippangu
+- Install `isc-dhcp-server`
+```
+apt-get update
+apt-get install isc-dhcp-server -y
+```
+- Setup /etc/default/isc-dhcp-server dengan uncomment `INTERFACES="eth0"`
+- Tambahkan pengaturan subnetting berikut pada /etc/dhcp/dhcpd.conf
+```
+#A2
+subnet 10.5.0.128 netmask 255.255.255.128 {
+    range 10.5.0.130 10.5.0.255;
+    option routers 10.5.0.129;
+    option broadcast-address 10.5.0.255;
+    option domain-name-servers 10.5.0.10;
+    default-lease-time 360;
+    max-lease-time 7200;
+}
+
+#A1
+subnet 10.5.0.8 netmask 255.255.255.248 {
+}
+
+#A3
+subnet 10.5.4.0 netmask 255.255.252.0 {
+    range 10.5.4.2 10.5.7.255;
+    option routers 10.5.4.1;
+    option broadcast-address 10.5.7.255;
+    option domain-name-servers 10.5.0.10;
+    default-lease-time 360;
+    max-lease-time 7200;
+}
+
+#A6
+subnet 10.5.2.0 netmask 255.255.254.0 {
+    range 10.5.2.2 10.5.3.255;
+    option routers 10.5.2.1;
+    option broadcast-address 10.5.3.255;
+    option domain-name-servers 10.5.0.10;
+    default-lease-time 360;
+    max-lease-time 7200;
+}
+
+#A7
+subnet 10.5.1.0 netmask 255.255.255.0 {
+    range 10.5.1.2 10.5.1.255;
+    option routers 10.5.1.1;
+    option broadcast-address 10.5.1.255;
+    option domain-name-servers 10.5.0.10;
+    default-lease-time 360;
+    max-lease-time 7200;
+}
+```
+- Jalankan
+```
+service isc-dhcp-server start
+service isc-dhcp-server restart
+service isc-dhcp-server status
+```
+
+#### Setup DNS Server di Doriki
+- Install bind9 dengan 
+```
+apt-get update
+apt-get install bind9 -y
+```
+- Ubah forwarder pada `/etc/bind/named.conf.options`
+```
+	forwarders {
+	 	10.5.0.1;
+	};
+
+```
+- Start
+```
+service bind9 restart
+```
+
+
 ## SETUP STATIC INTERNET (Foosha)
 ```
 auto eth0
@@ -49,6 +161,8 @@ iface eth0 inet static
     netmask 255.255.255.0
     gateway 192.168.122.1
 ```
+
+- Jalankan `iptables -t nat -A POSTROUTING -s 10.5.0.0/21 -o eth0 -j SNAT --to-source 192.168.122.25` pada Foosha
 —
 
 ### NO 1 
