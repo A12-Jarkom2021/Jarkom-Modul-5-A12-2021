@@ -25,7 +25,6 @@ iptables -t nat -A POSTROUTING -s 10.18.0.0/20 -o eth0 -j SNAT --to-source 192.1
 
 --to-s (ip eth0): Mendefinisikan IP source, di mana digunakan eth0 Foosha
 
-—
 ### NO 2 
 #### Doriki (DNS Server) & Jipangu (DHCP Server)
 ```
@@ -51,7 +50,6 @@ iptables -A FORWARD -d 10.5.0.8/29 -i eth0 -p tcp --dport 80 -j DROP
 
 3. Pada Foosha: nmap -p 80 10.5.0.10 atau nmap -p 80 10.5.0.10
 
-—
 ### NO 3
 #### Doriki (DNS Server) & Jipangu (DHCP Server)
 ```
@@ -75,5 +73,37 @@ Masuk ke 4 node berbeda
 
 Ping ke Jipangu/Doriki secara bersamaan
 
+### NO 4
+#### Doriki (DNS Server) 
 
-—
+##### BATAS AKSES CHIPER KE DORIKI
+iptables -A INPUT -s 10.5.0.130/25 -d 10.5.0.10/29 -m time --timestart 07:00 --timestop 15:00 --weekdays Mon,Tue,Wed,Thu -j ACCEPT
+
+iptables -A INPUT -s 10.5.0.130/25 -j REJECT
+
+#####  BATAS AKSES BLUENO KE DORIKI
+iptables -A INPUT -s 10.5.4.2/22  -d 10.5.0.10/29 -m time --timestart 07:00 --timestop 15:00 --weekdays Mon,Tue,Wed,Thu -j ACCEPT
+
+iptables -A INPUT -s 10.5.4.2/22  -j REJECT
+
+Keterangan:
+A INPUT : Menggunakan chain INPUT
+
+s 10.5.0.130/25 : Mendifinisikan alamat asal dari paket yaitu IP dari subnet Blueno
+
+s 10.5.4.2/22 : Mendifinisikan alamat asal dari paket yaitu IP dari subnet Chiper
+
+d 10.5.0.10/29 : Mendifinisikan alamat tujuan dari paket yaitu IP dari subnet Doriki
+
+m time : Menggunakan rule time
+
+-timestart 07:00 : Mendefinisikan waktu mulai yaitu 07:00
+
+-timestop 15:00: : Mendefinisikan waktu berhenti yaitu 15:00
+
+--weekdays Mon,Tue,Wed,Thu : Mendefinisikan hari yaitu Senin hingga Kamis
+
+-j ACCEPT : Paket di-accept
+
+-j REJECT : Paket ditolak
+
