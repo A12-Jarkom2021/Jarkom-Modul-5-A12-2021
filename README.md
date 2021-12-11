@@ -1,6 +1,12 @@
 # Jarkom-Modul-5-A12-2021
-Jarkom-Modul-5-A12-2021
+Jarkom_Modul5_Lapres_A12
 
+**Praktikum Modul 5 - Jaringan Komputer 2021**
+**A12**
+-   Fiqey Indriati Eka Sari (05111940000015)
+-   Dyah Putri Nariswari (05111940000047)
+-   Muhammad Farrel Abhinaya (05111940000173)
+---
 ## SETUP STATIC INTERNET (Foosha)
 auto eth0
 iface eth0 inet static
