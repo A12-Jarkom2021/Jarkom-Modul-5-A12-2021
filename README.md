@@ -118,3 +118,71 @@ m time : Menggunakan rule time
 
 -j REJECT : Paket ditolak
 
+### NO 5 (Di Doriki)
+#### Batas Akses Doriki Dari Elena
+```
+iptables -A INPUT -s 10.5.2.2/23 -m time --timestart 15:01 --timestop 06:59 -j ACCEPT
+```
+```
+iptables -A INPUT -s 10.5.2.2/23 -j REJECT
+```
+
+#### Batas Akses Doriki Dari Fukurou
+iptables -A INPUT -s 10.5.1.2/24 -m time --timestart 15:01 --timestop 06:59 -j ACCEPT
+iptables -A INPUT -s 10.5.1.2/24-j REJECT
+
+Keterangan:
+A INPUT : Menggunakan chain INPUT
+
+s 10.18.10.0/23 : Mendifinisikan alamat asal dari paket yaitu IP dari subnet Elena
+
+s 10.18.8.0/24 : Mendifinisikan alamat asal dari paket yaitu IP dari subnet Fukurou
+
+m time : Menggunakan rule time
+
+-timestart 15:01 : Mendefinisikan waktu mulai yaitu 07:00
+
+-timestop 06:59 : Mendefinisikan waktu berhenti yaitu 15:00
+
+-j ACCEPT : Paket di-accept
+
+-j REJECT : Paket ditolak
+
+(Untuk Test Semua Client Ubah Pada Doriki)
+1. date -s "8 nov 2021 10:00:00"
+
+2. date -s "8 nov 2021 17:00:00"
+
+### NO 6 (Di Guanhao)
+#### Didistribusikan Jorge dan Maingate
+```
+iptables -A PREROUTING -t nat -p tcp -d 10.5.0.8/29 --dport 80 -m statistic --mode nth --every 2 --packet 0 -j DNAT --to-destination  10.5.0.18:80
+```
+```
+iptables -A PREROUTING -t nat -p tcp -d 10.5.0.8/29 --dport 80 -j DNAT --to-destination 10.5.0.19:80
+```
+```
+iptables -t nat -A POSTROUTING -p tcp -d 10.5.0.18 --dport 80 -j SNAT --to-source 10.5.0.8:80
+```
+```
+iptables -t nat -A POSTROUTING -p tcp -d 10.5.0.19 --dport 80 -j SNAT --to-source 10.5.0.8:80
+```
+
+#### Testing Nomer 6
+1. Pada Guanhao, Jorge, Maingate dan Elena install ```apt-get install netcat```
+
+2. Pada Jorge ketikkan perintah: ```nc -l -p 80```
+
+3. Pada Maingate ketikkan perintah: ```nc -l -p 80```
+
+4. Pada client Elena ketikkan perintah: ```nc 10.18.4.128 80```
+
+5. Ketikkan sembarang pada client Elena, nanti akan muncul bergantian
+
+(Untuk Cek IPTables yang udah diassign)
+```
+iptables --list 
+```
+```
+iptables -L -n -t nat
+```
