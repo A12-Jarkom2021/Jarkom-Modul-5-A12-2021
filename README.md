@@ -77,14 +77,19 @@ Ping ke Jipangu/Doriki secara bersamaan
 #### Doriki (DNS Server) 
 
 ##### BATAS AKSES CHIPER KE DORIKI
+```
 iptables -A INPUT -s 10.5.0.130/25 -d 10.5.0.10/29 -m time --timestart 07:00 --timestop 15:00 --weekdays Mon,Tue,Wed,Thu -j ACCEPT
-
+```
+```
 iptables -A INPUT -s 10.5.0.130/25 -j REJECT
-
+```
 #####  BATAS AKSES BLUENO KE DORIKI
+```
 iptables -A INPUT -s 10.5.4.2/22  -d 10.5.0.10/29 -m time --timestart 07:00 --timestop 15:00 --weekdays Mon,Tue,Wed,Thu -j ACCEPT
-
+```
+```
 iptables -A INPUT -s 10.5.4.2/22  -j REJECT
+```
 
 Keterangan:
 A INPUT : Menggunakan chain INPUT
