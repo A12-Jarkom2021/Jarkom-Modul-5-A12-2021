@@ -335,7 +335,7 @@ m time : Menggunakan rule time
 
 -j REJECT : Paket ditolak
 
-#### TESTING NO 6
+#### TESTING NO 5
 
 1. `date -s "8 Nov 2021 10:00:00"`
 
