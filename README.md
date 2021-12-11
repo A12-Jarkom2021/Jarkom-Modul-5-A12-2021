@@ -37,6 +37,25 @@ Kalian juga diharuskan melakukan Routing agar setiap perangkat pada jaringan ter
 
 ![image](https://user-images.githubusercontent.com/57583780/145675902-3c7b1145-37cd-419a-8839-d8726b6fc8c1.png)
 
+##### Routing Foosha
+```
+route add -net 10.5.0.8 netmask 255.255.255.248 gw 10.5.0.2
+route add -net 10.5.0.128 netmask 255.255.255.128 gw 10.5.0.2
+route add -net 10.5.4.0 netmask 255.255.252.0 gw 10.5.0.2
+route add -net 10.5.2.0 netmask 255.255.254.0 gw 10.5.0.6
+route add -net 10.5.1.0 netmask 255.255.255.0 gw 10.5.0.6
+route add -net 10.5.0.16 netmask 255.255.255.248 gw 10.5.0.6
+```
+
+##### Routing Water7
+```
+route add -net 0.0.0.0 netmask 0.0.0.0 gw 10.5.0.1
+```
+
+##### Routing Guanhao
+```
+route add -net 0.0.0.0 netmask 0.0.0.0 gw 10.5.0.5
+```
 
 ### D
 Tugas berikutnya adalah memberikan ip pada subnet Blueno, Cipher, Fukurou, dan Elena secara dinamis menggunakan bantuan DHCP server. Kemudian kalian ingat bahwa kalian harus setting DHCP Relay pada router yang menghubungkannya.
