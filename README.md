@@ -7,6 +7,40 @@ Jarkom_Modul5_Lapres_A12
 -   Dyah Putri Nariswari (05111940000047)
 -   Muhammad Farrel Abhinaya (05111940000173)
 ---
+
+### A
+Tugas pertama kalian yaitu membuat topologi jaringan sesuai dengan rancangan yang diberikan Luffy dibawah ini:
+
+![image](https://user-images.githubusercontent.com/57583780/145675825-650a4a39-8423-48fc-9e46-b9d83bd9a967.png)
+
+Keterangan : 	
+        Doriki adalah DNS Server
+		Jipangu adalah DHCP Server
+		Maingate dan Jorge adalah Web Server
+		Jumlah Host pada Blueno adalah 100 host
+		Jumlah Host pada Cipher adalah 700 host
+		Jumlah Host pada Elena adalah 300 host
+		Jumlah Host pada Fukurou adalah 200 host
+
+### B
+Karena kalian telah belajar subnetting dan routing, Luffy ingin meminta kalian untuk membuat topologi tersebut menggunakan teknik CIDR atau VLSM. setelah melakukan subnetting, 
+
+#### Subnetting menggunakan VLSM
+
+![image](https://user-images.githubusercontent.com/57583780/145675893-f3938a87-5bce-47e4-b9ee-303f0de54393.png)
+
+
+### C
+Kalian juga diharuskan melakukan Routing agar setiap perangkat pada jaringan tersebut dapat terhubung.
+
+#### Routing 
+
+![image](https://user-images.githubusercontent.com/57583780/145675902-3c7b1145-37cd-419a-8839-d8726b6fc8c1.png)
+
+
+### D
+Tugas berikutnya adalah memberikan ip pada subnet Blueno, Cipher, Fukurou, dan Elena secara dinamis menggunakan bantuan DHCP server. Kemudian kalian ingat bahwa kalian harus setting DHCP Relay pada router yang menghubungkannya.
+
 ## SETUP STATIC INTERNET (Foosha)
 ```
 auto eth0
