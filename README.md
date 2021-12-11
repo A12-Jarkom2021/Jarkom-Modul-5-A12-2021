@@ -153,6 +153,9 @@ service isc-dhcp-server restart
 service isc-dhcp-server status
 ```
 
+![Screenshot from 2021-12-11 20-59-09](https://user-images.githubusercontent.com/57583780/145679314-324a0c1b-1503-4eab-a831-6ad825375f03.png)
+
+
 #### Setup DNS Server di Doriki
 - Install bind9 dengan 
 ```
@@ -187,7 +190,7 @@ iface eth0 inet static
 ### NO 1 
 #### Foosha
 ```
-iptables -t nat -A POSTROUTING -s 10.18.0.0/20 -o eth0 -j SNAT --to-alamat asal 192.168.122.25
+iptables -t nat -A POSTROUTING -s 10.18.0.0/20 -o eth0 -j SNAT --to-source asal 192.168.122.25
 ```
 -t nat: Tabel NAT digunakan karena akan mengubah alamat asal paket
 
@@ -200,6 +203,9 @@ iptables -t nat -A POSTROUTING -s 10.18.0.0/20 -o eth0 -j SNAT --to-alamat asal 
 -j SNAT: Menggunakan target SNAT untuk mengubah alamat asal paket
 
 --to-s (ip eth0): Mendefinisikan IP alamat asal, yaitu eth0 Foosha
+
+
+![Screenshot from 2021-12-11 21-02-15](https://user-images.githubusercontent.com/57583780/145679380-6608afe0-696e-41a5-8b27-a253cd38d24c.png)
 
 —
 
@@ -230,6 +236,8 @@ iptables -A FORWARD -d 10.5.0.8/29 -i eth0 -p tcp --dport 80 -j DROP
 
 Keterangan: 10.5.0.10 adalah IP dari subnet Jipangu
 
+![Screenshot from 2021-12-11 21-05-10](https://user-images.githubusercontent.com/57583780/145679470-4214f368-c90a-4aee-940a-b0beebaeef77.png)
+
 —
 
 ### NO 3
@@ -255,6 +263,8 @@ Masuk ke empat node berbeda
 Ping ke Jipangu/Doriki secara bersamaan
 Jika berhasil, maka node ke-4 tidak dapat melakukan ping ke Jipangu/Doriki karena sudah lebih dari 3
 
+![Screenshot from 2021-12-11 21-09-09](https://user-images.githubusercontent.com/57583780/145679586-3ab30896-e2c7-4464-9abb-ba6f75512abe.png)
+
 ### NO 4
 #### Doriki (DNS Server) 
 
@@ -267,6 +277,8 @@ iptables -A INPUT -s 10.5.0.130/25 -d 10.5.0.10/29 -m time --timestart 07:00 --t
 iptables -A INPUT -s 10.5.0.130/25 -j REJECT
 ```
 
+![Screenshot from 2021-12-11 21-18-53](https://user-images.githubusercontent.com/57583780/145679866-02980785-bd76-46fe-a0ce-4fe99bd95e53.png)
+
 #####  BATAS AKSES BLUENO KE DORIKI
 ```
 iptables -A INPUT -s 10.5.4.2/22  -d 10.5.0.10/29 -m time --timestart 07:00 --timestop 15:00 --weekdays Mon,Tue,Wed,Thu -j ACCEPT
@@ -275,6 +287,9 @@ iptables -A INPUT -s 10.5.4.2/22  -d 10.5.0.10/29 -m time --timestart 07:00 --ti
 ```
 iptables -A INPUT -s 10.5.4.2/22  -j REJECT
 ```
+
+![Screenshot from 2021-12-11 21-18-03](https://user-images.githubusercontent.com/57583780/145679839-fe41d918-32af-4d2f-b684-b82ee221a6d9.png)
+
 
 Keterangan:
 A INPUT : Menggunakan chain INPUT
@@ -309,6 +324,9 @@ iptables -A INPUT -s 10.5.2.2/23 -m time --timestart 15:01 --timestop 06:59 -j A
 iptables -A INPUT -s 10.5.2.2/23 -j REJECT
 ```
 
+![Screenshot from 2021-12-11 21-22-36](https://user-images.githubusercontent.com/57583780/145679984-becbd3e9-2412-422c-8078-bd50092ad7ff.png)
+
+
 #####  BATAS AKSES FUKUROU KE DORIKI
 ```
 iptables -A INPUT -s 10.5.1.2/24 -m time --timestart 15:01 --timestop 06:59 -j ACCEPT
@@ -317,6 +335,9 @@ iptables -A INPUT -s 10.5.1.2/24 -m time --timestart 15:01 --timestop 06:59 -j A
 ```
 iptables -A INPUT -s 10.5.1.2/24-j REJECT
 ```
+
+![Screenshot from 2021-12-11 21-21-27](https://user-images.githubusercontent.com/57583780/145679960-fbb566c5-9b0d-4462-9ecb-107684e17488.png)
+
 
 Keterangan:
 A INPUT : Chain INPUT
@@ -371,3 +392,8 @@ iptables -t nat -A POSTROUTING -p tcp -d 10.5.0.19 --dport 80 -j SNAT --to-alama
 4. Elena: nc 10.18.4.128 80
 
 5. Ketikkan sembarang pada client Elena, nanti akan muncul bergantian
+
+![Screenshot from 2021-12-11 21-24-27](https://user-images.githubusercontent.com/57583780/145680049-fb9dabf8-6384-4ed2-bde1-d8a73d7561ac.png)
+
+![Screenshot from 2021-12-11 21-28-40](https://user-images.githubusercontent.com/57583780/145680196-81dbd78a-e0be-4eb8-8cfe-6545aee64214.png)
+
